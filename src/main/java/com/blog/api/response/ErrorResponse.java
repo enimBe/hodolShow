@@ -1,5 +1,6 @@
 package com.blog.api.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,6 @@ import java.util.Map;
  * }
  */
 
-@RequiredArgsConstructor
 @Getter
 public class ErrorResponse {
 
@@ -26,6 +26,12 @@ public class ErrorResponse {
 
     // TODO Map 사용하지 않도록 수정해보기
     private Map<String, String> validation = new HashMap<>();
+
+    @Builder
+    public ErrorResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     public void addValidation(String fieldName, String errorMessage) {
         this.validation.put(fieldName, errorMessage);
