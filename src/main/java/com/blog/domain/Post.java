@@ -1,4 +1,4 @@
-package com.blog.api.domain;
+package com.blog.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
