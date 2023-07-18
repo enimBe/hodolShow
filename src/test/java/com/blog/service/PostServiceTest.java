@@ -3,8 +3,10 @@ package com.blog.service;
 import com.blog.domain.Post;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
+import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
 import com.blog.response.PostResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,4 +94,55 @@ class PostServiceTest {
         assertEquals("호돌맨 제목 30", posts.get(0).getTitle());
         assertEquals("호돌맨 제목 26", posts.get(4).getTitle());
     }
+
+    @Test
+    @DisplayName("글 제목만 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .content(null)
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        //then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id = " + post.getId()));
+        assertEquals("호돌걸", changedPost.getTitle());
+        assertEquals("반포자이", changedPost.getContent());
+    }
+
+    @Test
+    @DisplayName("글 제목, 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .content("초가집") // client에서 수정하지 않은 데이터는 원래값 전달하기로 약속한 경우 .. 아닌경우엔 service에서 null인경우 처리 .. 또는 PostEditor에서 처리
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        //then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id = " + post.getId()));
+        assertEquals("호돌걸", changedPost.getTitle());
+        assertEquals("초가집", changedPost.getContent());
+    }
+
 }

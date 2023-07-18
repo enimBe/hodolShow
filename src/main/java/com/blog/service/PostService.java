@@ -3,11 +3,13 @@ package com.blog.service;
 import com.blog.domain.Post;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
+import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
 import com.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,23 @@ public class PostService {
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void edit(Long id, PostEdit postEdit) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        // PostEditor는 수정할 수 있느 필드를 제한할 때
+//        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+//
+//        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+//                .content(postEdit.getContent())
+//                .build();
+
+        post.edit(
+                postEdit.getTitle() != null ? postEdit.getTitle() : post.getTitle(),
+                postEdit.getContent() != null ? postEdit.getContent() : post.getContent());
     }
 }
 
