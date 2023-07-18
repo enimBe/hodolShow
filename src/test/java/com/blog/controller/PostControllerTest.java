@@ -186,7 +186,7 @@ class PostControllerTest {
 
         PostEdit postEdit = PostEdit.builder()
                 .title("호돌걸")
-                .content("반포자이")
+                .content("반포자이") // TODO 얘 지우면 400 떨어짐..
                 .build();
 
         // expected
@@ -195,6 +195,25 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test8() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(delete("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
     }
 
 }
