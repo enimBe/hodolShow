@@ -1,5 +1,6 @@
 package com.blog.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +20,21 @@ import java.util.Map;
  */
 
 @Getter
+//@JsonInclude(value = JsonInclude.Include.NON_EMPTY) // null 값은 빼고 return
 public class ErrorResponse {
 
     private final String code;
     private final String message;
-
-    // TODO Map 사용하지 않도록 수정해보기
-    private Map<String, String> validation = new HashMap<>();
+    private final Map<String, String> validation;    // TODO Map 사용하지 않도록 수정해보기
 
     @Builder
-    public ErrorResponse(String code, String message) {
+    public ErrorResponse(String code, String message, Map<String, String> validation) {
         this.code = code;
         this.message = message;
+        this.validation = validation != null ? validation : new HashMap<>();
     }
 
     public void addValidation(String fieldName, String errorMessage) {
         this.validation.put(fieldName, errorMessage);
     }
-
 }
