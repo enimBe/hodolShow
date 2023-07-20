@@ -1,0 +1,18 @@
+// snippet 경로를 못 읽어들이는 버그로 인해 추가
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= Blog API project1
+:toc:
+
+== 글 단건 조회
+
+=== CURL
+include::{snippets}/index/curl-request.adoc[]
+
+=== 요청
+include::{snippets}/index/http-request.adoc[]
+
+=== 응답
+include::{snippets}/index/http-response.adoc[]
