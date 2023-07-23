@@ -4,24 +4,35 @@ ifndef::snippets[]
 endif::[]
 
 = Blog API project1
-:toc:
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 2
+:sectlinks:
 
 == 글 단건 조회
 
 === 요청
 
-include::{snippets}/index/http-request.adoc[]
+include::{snippets}/post-inquiry/http-request.adoc[]
 
-include::{snippets}/index/path-parameters.adoc[]
-
-include::{snippets}/index/request-fields.adoc[]
+include::{snippets}/post-inquiry/path-parameters.adoc[]
 
 === 응답
 
-include::{snippets}/index/http-response.adoc[]
+include::{snippets}/post-inquiry/http-response.adoc[]
 
-include::{snippets}/index/response-fields.adoc[]
+include::{snippets}/post-inquiry/response-fields.adoc[]
 
-=== CURL
+== 글 작성
 
-include::{snippets}/index/curl-request.adoc[]
+=== 요청
+
+include::{snippets}/post-create/http-request.adoc[]
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/post-create/http-response.adoc[]
