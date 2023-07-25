@@ -81,4 +81,13 @@ tasks {
         // Ascii Doc 파일 생성이 성공해야만, Build 진행
         dependsOn(asciidoctor)
     }
+
+    bootJar {
+        enabled = true
+        dependsOn(asciidoctor)
+    }
+
+    jar {
+        enabled = false
+    }
 }
