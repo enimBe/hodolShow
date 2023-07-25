@@ -1,13 +1,17 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
-  <RouterLink to="/">Home</RouterLink>
-  <RouterLink to="/write">글 작성</RouterLink>
-  <RouterView/>
+  <header>
+
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/write">글 작성</RouterLink>
+      </nav>
+  </header>
+
+  <RouterView />
 </template>
 
 <style>
-
 </style>
