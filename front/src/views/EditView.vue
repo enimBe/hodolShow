@@ -3,7 +3,7 @@ import {ref} from "vue";
 
 import axios from "axios";
 import {useRouter} from "vue-router";
-import {defineProps} from 'vue/dist/vue';
+import {defineProps} from 'vue';
 
 const router = useRouter();
 
