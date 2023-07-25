@@ -3,7 +3,7 @@ import {ref} from "vue";
 
 import axios from "axios";
 import {useRouter} from "vue-router";
-import {defineProps} from "vue/dist/vue";
+import {defineProps} from 'vue/dist/vue';
 
 const router = useRouter();
 
@@ -41,8 +41,8 @@ const edit = () => {
     <el-input v-model="post.content" type="textarea" rows="15"/>
   </div>
 
-  <div class="mt-2">
-    <el-button type="warning" @click="edit()">글 수정 완료</el-button>
+  <div class="mt-2 d-flex justify-content-end">
+    <el-button type="warning" @click="edit()">submit</el-button>
   </div>
 
 </template>

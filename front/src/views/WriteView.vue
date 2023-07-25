@@ -31,7 +31,9 @@ const write = function () {
   </div>
 
   <div class="mt-2">
-    <el-button type="primary" @click="write()">글 작성 완료</el-button>
+    <div class="d-flex justify-content-end">
+      <el-button type="primary" @click="write()">Save</el-button>
+    </div>
   </div>
 
 </template>
