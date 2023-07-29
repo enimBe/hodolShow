@@ -1,6 +1,6 @@
 package com.blog.controller;
 
-import com.blog.exception.InvalidRequest;
+import com.blog.config.data.UserSession;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
@@ -21,9 +21,14 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/foo")
-    public String foo(@RequestAttribute("userName") String userName) {
-        log.info(">>>{}", userName);
-        return "foo";
+    public String foo(UserSession userSession) {
+        log.info(">>>{}", userSession.name);
+        return userSession.name;
+    }
+
+    @GetMapping("/bar")
+    public String bar() {
+        return "인증이 필요 없는 페이지";
     }
 
     @PostMapping("/posts") // POST -> 200, 201
