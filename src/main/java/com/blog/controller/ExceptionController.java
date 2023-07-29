@@ -1,7 +1,6 @@
 package com.blog.controller;
 
 import com.blog.exception.BlogException;
-import com.blog.exception.InvalidRequest;
 import com.blog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

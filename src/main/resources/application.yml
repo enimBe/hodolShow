@@ -1,4 +1,13 @@
 spring:
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+
+  sql:
+    init:
+      mode: always
+
   h2:
     console:
       enabled: true
