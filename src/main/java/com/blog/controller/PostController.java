@@ -1,6 +1,6 @@
 package com.blog.controller;
 
-import com.blog.config.data.UserSession;
+import com.blog.config.data.MemberSession;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
@@ -21,9 +21,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/foo")
-    public Long foo(UserSession userSession) {
-        log.info(">>>{}", userSession.id);
-        return userSession.id;
+    public Long foo(MemberSession memberSession) {
+        log.info(">>>{}", memberSession.id);
+        return memberSession.id;
     }
 
     @GetMapping("/bar")
@@ -31,6 +31,8 @@ public class PostController {
         return "인증이 필요 없는 페이지";
     }
 
+
+    // TODO MemberSession 받아서
     @PostMapping("/posts") // POST -> 200, 201
     public void post(@RequestBody @Valid PostCreate request) {
         request.validate();
