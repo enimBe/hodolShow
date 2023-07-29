@@ -1,6 +1,7 @@
 package com.blog.service;
 
 import com.blog.domain.Member;
+import com.blog.domain.Session;
 import com.blog.exception.InvalidSigninInformation;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Login;
@@ -13,9 +14,12 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
 
-    public void signin(Login login) {
+    public String signin(Login login) {
         Member member = memberRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(() -> new InvalidSigninInformation());
+                .orElseThrow(InvalidSigninInformation::new);
+        Session session = member.addSession();
+
+        return session.getAccessToken();
     }
 
 
