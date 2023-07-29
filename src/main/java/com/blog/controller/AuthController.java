@@ -5,6 +5,7 @@ import com.blog.exception.InvalidRequest;
 import com.blog.exception.InvalidSigninInformation;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Login;
+import com.blog.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,18 +19,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final MemberRepository memberRepository;
+    private final AuthService authService;
 
+    // TODO 테스트짜기
     @PostMapping("/auth/login")
-    public Member login(@RequestBody Login login) {
-        // json 아이디/비밀번호
-        log.info(">>>login={}", login);
-
-        // DB에서 조회
-        Member member =  memberRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(() -> new InvalidSigninInformation());
-
-        // 토큰을 응답
-        return member;
+    public void login(@RequestBody Login login) {
+        // json 아이디/비밀번호 -> DB에서 조회 -> 토큰을 응답
+        authService.signin(login);
     }
 }
