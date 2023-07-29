@@ -20,6 +20,12 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/foo")
+    public String foo(@RequestAttribute("userName") String userName) {
+        log.info(">>>{}", userName);
+        return "foo";
+    }
+
     @PostMapping("/posts") // POST -> 200, 201
     public void post(@RequestBody @Valid PostCreate request) {
         request.validate();
