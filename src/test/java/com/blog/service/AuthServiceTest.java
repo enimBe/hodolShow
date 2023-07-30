@@ -15,8 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.rmi.AlreadyBoundException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AuthServiceTest {
@@ -50,7 +49,8 @@ class AuthServiceTest {
 
         Member member = memberRepository.findAll().iterator().next();
         assertEquals("enimbe99@gmail.com", member.getEmail());
-        assertEquals("1234", member.getPassword());
+        assertNotNull(member.getPassword());
+        assertNotEquals("1234", member.getPassword());
         assertEquals("서예주", member.getName());
     }
 

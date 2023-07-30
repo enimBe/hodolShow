@@ -7,7 +7,6 @@ import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
 import com.blog.response.PostResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
