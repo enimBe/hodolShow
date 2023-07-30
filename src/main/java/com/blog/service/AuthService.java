@@ -3,16 +3,15 @@ package com.blog.service;
 import com.blog.domain.Member;
 import com.blog.domain.Session;
 import com.blog.exception.AlreadyExistEmailException;
-import com.blog.exception.InvalidRequest;
 import com.blog.exception.InvalidSigninInformation;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Login;
 import com.blog.request.Signup;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.rmi.AlreadyBoundException;
 import java.util.Optional;
 
 @Service
@@ -36,9 +35,17 @@ public class AuthService {
             throw new AlreadyExistEmailException();
         }
 
+        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
+                16,
+                8,
+                1,
+                32,
+                64);
+        String encryptedPassword = encoder.encode(signup.getPassword());
+
         var member = Member.builder()
                 .name(signup.getName())
-                .password(signup.getPassword())
+                .password(encryptedPassword)
                 .email(signup.getEmail())
                 .build();
         memberRepository.save(member);
