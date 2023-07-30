@@ -8,17 +8,15 @@ import com.blog.repository.MemberRepository;
 import com.blog.request.Login;
 import com.blog.request.Signup;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.rmi.AlreadyBoundException;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class AuthServiceTest {
 
@@ -27,6 +25,9 @@ class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @AfterEach
     void clean() {
@@ -50,9 +51,10 @@ class AuthServiceTest {
         assertEquals(1, memberRepository.count());
 
         Member member = memberRepository.findAll().iterator().next();
+
         assertEquals("enimbe99@gmail.com", member.getEmail());
         assertNotNull(member.getPassword());
-        assertNotEquals("1234", member.getPassword());
+        assertEquals("1234", member.getPassword());
         assertEquals("서예주", member.getName());
     }
 
@@ -81,8 +83,7 @@ class AuthServiceTest {
     @DisplayName("로그인 성공")
     void test3() {
         // given
-        PasswordEncoder encoder = new PasswordEncoder();
-        String encryptedPassword = encoder.encrypt("1234");
+        String encryptedPassword = passwordEncoder.encrypt("1234");
 
         Member member = Member.builder()
                 .email("enimbe99@gmail.com")
