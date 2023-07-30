@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "2.7.13"
+    id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.asciidoctor.jvm.convert") version "3.3.2" // gradle 7 이후
 }
@@ -9,7 +9,7 @@ group = "com.blog"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -31,8 +31,9 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 
 
-    implementation("com.querydsl:querydsl-core")
-    implementation("com.querydsl:querydsl-jpa")
+    implementation("com.querydsl:querydsl-core:5.0.0")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -40,7 +41,7 @@ dependencies {
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta") // querydsl JPAAnnotationProcessor 사용 지정
     annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
     annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 
