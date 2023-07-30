@@ -2,6 +2,7 @@ package com.blog.service;
 
 import com.blog.domain.Member;
 import com.blog.exception.AlreadyExistEmailException;
+import com.blog.exception.InvalidSigninInformation;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Login;
 import com.blog.request.Signup;
@@ -73,6 +74,50 @@ class AuthServiceTest {
 
         // expected
         assertThrows(AlreadyExistEmailException.class, () -> authService.signup(signup));
+    }
+
+    @Test
+    @DisplayName("로그인 성공")
+    void test3() {
+        // given
+        Signup signup = Signup.builder()
+                .email("enimbe99@gmail.com")
+                .password("1234")
+                .name("서예주")
+                .build();
+        authService.signup(signup);
+
+        Login login = Login.builder()
+                .email("enimbe99@gmail.com")
+                .password("1234")
+                .build();
+
+        // when
+        Long memberId = authService.signin(login);
+
+        // then
+        assertNotNull(memberId);
+    }
+
+    @Test
+    @DisplayName("비밀번호 틀림")
+    void test4() {
+        // given
+        Signup signup = Signup.builder()
+                .email("enimbe99@gmail.com")
+                .password("1234")
+                .name("서예주")
+                .build();
+        authService.signup(signup);
+
+        Login login = Login.builder()
+                .email("enimbe99@gmail.com")
+                .password("5678")
+                .build();
+
+        // expected
+        assertThrows(InvalidSigninInformation.class,
+                () -> authService.signin(login));
     }
 
 }
