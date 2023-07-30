@@ -1,6 +1,5 @@
 package com.blog.repository;
 
-import com.blog.domain.Member;
 import com.blog.domain.Session;
 import org.springframework.data.repository.CrudRepository;
 

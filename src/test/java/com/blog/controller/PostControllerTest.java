@@ -5,6 +5,7 @@ import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 class PostControllerTest {
 
     // TODO ObjectMapper 공부하기
@@ -39,6 +39,11 @@ class PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void clear() {
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 작성 요청 시 title 값은 필수다.")
