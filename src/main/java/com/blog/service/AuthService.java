@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import com.blog.crypto.PasswordEncoder;
 import com.blog.domain.Member;
 import com.blog.exception.AlreadyExistEmailException;
 import com.blog.exception.InvalidSigninInformation;
@@ -24,12 +25,8 @@ public class AuthService {
         Member member = memberRepository.findByEmail(login.getEmail())
                 .orElseThrow(InvalidSigninInformation::new);
 
-        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
-                16,
-                8,
-                1,
-                32,
-                64);
+        PasswordEncoder encoder = new PasswordEncoder();
+
         var matches=  encoder.matches(login.getPassword(), member.getPassword());
         if (!matches) {
             throw new InvalidSigninInformation();
@@ -44,13 +41,8 @@ public class AuthService {
             throw new AlreadyExistEmailException();
         }
 
-        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
-                16,
-                8,
-                1,
-                32,
-                64);
-        String encryptedPassword = encoder.encode(signup.getPassword());
+        PasswordEncoder encoder = new PasswordEncoder();
+        String encryptedPassword = encoder.encrypt(signup.getPassword());
 
         var member = Member.builder()
                 .name(signup.getName())

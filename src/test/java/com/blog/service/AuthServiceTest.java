@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import com.blog.crypto.PasswordEncoder;
 import com.blog.domain.Member;
 import com.blog.exception.AlreadyExistEmailException;
 import com.blog.exception.InvalidSigninInformation;
@@ -80,12 +81,15 @@ class AuthServiceTest {
     @DisplayName("로그인 성공")
     void test3() {
         // given
-        Signup signup = Signup.builder()
+        PasswordEncoder encoder = new PasswordEncoder();
+        String encryptedPassword = encoder.encrypt("1234");
+
+        Member member = Member.builder()
                 .email("enimbe99@gmail.com")
-                .password("1234")
+                .password(encryptedPassword)
                 .name("서예주")
                 .build();
-        authService.signup(signup);
+        memberRepository.save(member);
 
         Login login = Login.builder()
                 .email("enimbe99@gmail.com")
