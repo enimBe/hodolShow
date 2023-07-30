@@ -25,8 +25,4 @@ spring:
         max-page-size: 2000
 
 hodolman:
-  hello:
-    name: "hodolman"
-    home: "seoul"
-    hobby: "programming"
-    age: 20
+  jwkKey: "T5sEcvjrPoUf6FkewBZH1FBeCLQYKnoBHx3XSpfUmXI"

@@ -1,7 +1,6 @@
 package com.blog.config;
 
 import com.blog.config.data.MemberSession;
-import com.blog.domain.Session;
 import com.blog.exception.Unauthorized;
 import com.blog.repository.SessionRepository;
 import io.jsonwebtoken.Claims;
@@ -17,14 +16,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 @Slf4j
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private static final String KEY = "T5sEcvjrPoUf6FkewBZH1FBeCLQYKnoBHx3XSpfUmXI=";
     private final SessionRepository sessionRepository;
     private final AppConfig appConfig;
 
@@ -42,11 +37,9 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
             throw new Unauthorized();
         }
 
-        byte[] decodedKey = Base64.decodeBase64(KEY);
-
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(decodedKey)
+                    .setSigningKey(appConfig.getJwkKey())
                     .build()
                     .parseClaimsJws(jws);
             String memberId = claims.getBody().getSubject();

@@ -2,24 +2,21 @@ package com.blog.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Base64;
 
 //@Configuration
 @Data
 @ConfigurationProperties(prefix = "hodolman")
 public class AppConfig {
 
-    public Hello hello;
+    private byte[] jwkKey;
 
-    @Data
-    public static class Hello {
-        public String name;
-        public String home;
-        public String hobby;
-        public Long age;
+    public void setJwkKey(String jwkKey) {
+        this.jwkKey = Base64.getDecoder().decode(jwkKey);
     }
 
+    public byte[] getJwkKey() {
+        return jwkKey;
+    }
 }
