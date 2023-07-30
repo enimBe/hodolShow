@@ -30,6 +30,7 @@ dependencies {
     implementation("com.querydsl:querydsl-core")
     implementation("com.querydsl:querydsl-jpa")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
