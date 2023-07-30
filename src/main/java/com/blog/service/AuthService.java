@@ -1,7 +1,6 @@
 package com.blog.service;
 
 import com.blog.domain.Member;
-import com.blog.domain.Session;
 import com.blog.exception.AlreadyExistEmailException;
 import com.blog.exception.InvalidSigninInformation;
 import com.blog.repository.MemberRepository;
@@ -22,9 +21,19 @@ public class AuthService {
 
     @Transactional
     public Long signin(Login login) {
-        Member member = memberRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
+        Member member = memberRepository.findByEmail(login.getEmail())
                 .orElseThrow(InvalidSigninInformation::new);
-        Session session = member.addSession();
+
+        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
+                16,
+                8,
+                1,
+                32,
+                64);
+        var matches=  encoder.matches(login.getPassword(), member.getPassword());
+        if (!matches) {
+            throw new InvalidSigninInformation();
+        }
 
         return member.getId();
     }
