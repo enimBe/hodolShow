@@ -4,8 +4,13 @@ import com.blog.config.data.MemberSession;
 import com.blog.domain.Session;
 import com.blog.exception.Unauthorized;
 import com.blog.repository.SessionRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -19,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
+    private static final String KEY = "T5sEcvjrPoUf6FkewBZH1FBeCLQYKnoBHx3XSpfUmXI=";
     private final SessionRepository sessionRepository;
 
     @Override
@@ -28,24 +34,22 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        if (servletRequest == null) {
-            log.error("servletRequest null");
+        String jws = webRequest.getHeader("Authorization");
+        if (jws == null || jws.equals("")) {
             throw new Unauthorized();
         }
 
-        Cookie[] cookies = servletRequest.getCookies();
-        if (cookies.length == 0) {
-            log.error("쿠키가 없음");
+        byte[] decodedKey = Base64.decodeBase64(KEY);
+
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(decodedKey)
+                    .build()
+                    .parseClaimsJws(jws);
+            String memberId = claims.getBody().getSubject();
+            return new MemberSession(Long.parseLong(memberId));
+        } catch (JwtException e) {
             throw new Unauthorized();
         }
-
-        String accessToken = cookies[0].getValue();
-
-        // database 사용자 확인 작업
-        Session session = sessionRepository.findByAccessToken(accessToken)
-                .orElseThrow(Unauthorized::new);
-
-        return new MemberSession(session.getMember().getId());
     }
 }

@@ -30,6 +30,11 @@ dependencies {
     implementation("com.querydsl:querydsl-core")
     implementation("com.querydsl:querydsl-jpa")
 
+
+    implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jpa") // querydsl JPAAnnotationProcessor 사용 지정
     annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
     annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
