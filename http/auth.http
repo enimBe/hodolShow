@@ -1,12 +1,9 @@
 ### 로그인
 
 POST http://localhost:8080/auth/login
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
 
-{
-  "email": "me@gmail.com",
-  "password": "qlqjs"
-}
+username=hodolman&password=1234
 
 ### 인증 페이지 요청
 
