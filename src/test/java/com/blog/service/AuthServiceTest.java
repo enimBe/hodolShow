@@ -1,6 +1,5 @@
 package com.blog.service;
 
-import com.blog.crypto.PasswordEncoder;
 import com.blog.domain.Member;
 import com.blog.exception.AlreadyExistEmailException;
 import com.blog.repository.MemberRepository;
@@ -23,9 +22,6 @@ class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @AfterEach
     void clean() {
