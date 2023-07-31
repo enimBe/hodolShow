@@ -1,6 +1,5 @@
 package com.blog.controller;
 
-import com.blog.config.data.MemberSession;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
@@ -19,18 +18,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
-    @GetMapping("/foo")
-    public Long foo(MemberSession memberSession) {
-        log.info(">>>{}", memberSession.id);
-        return memberSession.id;
-    }
-
-    @GetMapping("/bar")
-    public String bar() {
-        return "인증이 필요 없는 페이지";
-    }
-
 
     // TODO MemberSession 받아서
     @PostMapping("/posts") // POST -> 200, 201
