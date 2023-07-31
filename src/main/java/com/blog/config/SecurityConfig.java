@@ -6,6 +6,7 @@ import com.blog.config.handler.LoginFailHandler;
 import com.blog.domain.Member;
 import com.blog.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +19,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final ObjectMapper objectMapper;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -50,11 +55,11 @@ public class SecurityConfig {
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .defaultSuccessUrl("/")
-                .failureHandler(new LoginFailHandler(new ObjectMapper()))
+                .failureHandler(new LoginFailHandler(objectMapper))
                 .and()
                 .exceptionHandling(e -> {
-                    e.accessDeniedHandler(new Http403Handler());
-                    e.authenticationEntryPoint(new Http401Handler());
+                    e.accessDeniedHandler(new Http403Handler(objectMapper));
+                    e.authenticationEntryPoint(new Http401Handler(objectMapper));
                 })
                 .rememberMe(rm -> rm.rememberMeParameter("remember")
                         .alwaysRemember(false)
