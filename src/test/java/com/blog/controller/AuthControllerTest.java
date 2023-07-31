@@ -1,10 +1,8 @@
 package com.blog.controller;
 
 import com.blog.repository.MemberRepository;
-import com.blog.repository.SessionRepository;
 import com.blog.request.Signup;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -32,14 +27,6 @@ class AuthControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private SessionRepository sessionRepository;
-
-    @BeforeEach
-    void clear() {
-        sessionRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("회원가입")
