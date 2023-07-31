@@ -14,7 +14,7 @@ Content-Type: application/json
 POST http://localhost:8080/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-username=hodolman&password=1234&remember=1
+username=hodolman88@gmail.com&password=1234&remember=1
 
 ### 메인 페이지
 
