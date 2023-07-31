@@ -29,6 +29,7 @@ dependencies {
 
     implementation ("org.springframework.boot:spring-boot-starter-security")
     implementation ("org.springframework.security:spring-security-test")
+    implementation ("org.springframework.session:spring-session-jdbc")
 
     implementation("org.springframework.security:spring-security-crypto")
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
