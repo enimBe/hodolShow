@@ -20,6 +20,14 @@ username=hodolman88@gmail.com&password=1234&remember=1
 
 GET http://localhost:8080
 
+### 사용자 페이지
+
+GET http://localhost:8080/user
+
+### 관리자 페이지
+
+GET http://localhost:8080/admin
+
 ### 인증 페이지 요청
 
 GET http://localhost:8080/foo
