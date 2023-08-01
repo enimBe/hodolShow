@@ -7,3 +7,8 @@ Content-Type: application/json
   "title": "제목입니다.",
   "content": "내용입니다."
 }
+
+### 게시글 삭제
+
+DELETE http://localhost:8080/posts/1
+Content-Type: application/json

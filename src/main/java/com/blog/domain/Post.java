@@ -18,14 +18,23 @@ public class Post {
     @Lob
     private String content;
 
+    @ManyToOne
+    @JoinColumn
+    private Member member;
+
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, Member member) {
         this.title = title;
         this.content = content;
+        this.member = member;
     }
 
     public void edit(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public Long getMemberId() {
+        return this.member.getId();
     }
 }

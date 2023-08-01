@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import com.blog.config.UserPrincipal;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
@@ -8,6 +9,7 @@ import com.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -23,8 +25,8 @@ public class PostController {
     // TODO MemberSession 받아서
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts") // POST -> 200, 201
-    public void post(@RequestBody @Valid PostCreate request) {
-        postService.write(request);
+    public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
+        postService.write(userPrincipal.getUserId(), request);
     }
 
     /**
@@ -47,7 +49,8 @@ public class PostController {
         postService.edit(postId, request);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId, 'POST', 'DELETE')")
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
