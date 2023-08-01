@@ -1,10 +1,14 @@
 package com.blog.controller;
 
+import com.blog.config.BlogMockUser;
+import com.blog.domain.Member;
 import com.blog.domain.Post;
+import com.blog.repository.MemberRepository;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,9 +45,13 @@ class PostControllerTest {
     @Autowired
     private PostRepository postRepository;
 
-    @BeforeEach
-    void clear() {
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @AfterEach
+    void clean() {
         postRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
     @Test
@@ -68,7 +76,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "hodolman88@gmail.com", roles = {"ADMIN"}) // 인증이 된 상태로 가정설정, DB값도 상관 없음
+    @BlogMockUser
     @DisplayName("글 작성")
     void test3() throws Exception {
         // given
@@ -98,9 +106,17 @@ class PostControllerTest {
     @DisplayName("글 1개 조회")
     void test4() throws Exception {
         // given
+        Member member = Member.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        memberRepository.save(member);
+
         Post post = Post.builder()
                 .title("123456789012345")
                 .content("bar")
+                .member(member)
                 .build();
         postRepository.save(post);
 
@@ -118,10 +134,18 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
+        Member member = Member.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        memberRepository.save(member);
+
         List<Post> requestPosts = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("호돌맨 제목 " + i)
                         .content("반포자이 " + i)
+                        .member(member)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -141,10 +165,18 @@ class PostControllerTest {
     @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다")
     void test6() throws Exception {
         // given
+        Member member = Member.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        memberRepository.save(member);
+
         List<Post> requestPosts = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("호돌맨 제목 " + i)
                         .content("반포자이 " + i)
+                        .member(member)
                         .build())
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -161,13 +193,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "hodolman88@gmail.com", roles = {"ADMIN"})
+    @BlogMockUser
     @DisplayName("글 제목 수정")
     void test7() throws Exception {
         // given
+        Member member = memberRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("호돌맨")
                 .content("반포자이")
+                .member(member)
                 .build();
         postRepository.save(post);
 
@@ -185,13 +220,16 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "hodolman88@gmail.com", roles = {"ADMIN"})
+    @BlogMockUser
     @DisplayName("게시글 삭제")
     void test8() throws Exception {
         // given
+        Member member = memberRepository.findAll().get(0);
+
         Post post = Post.builder()
                 .title("호돌맨")
                 .content("반포자이")
+                .member(member)
                 .build();
         postRepository.save(post);
 
@@ -213,7 +251,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "hodolman88@gmail.com", roles = {"ADMIN"})
+    @BlogMockUser
     @DisplayName("존재하지 않는 게시글 수정")
     void test10() throws Exception {
         // given

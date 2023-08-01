@@ -1,12 +1,15 @@
 package com.blog.service;
 
+import com.blog.domain.Member;
 import com.blog.domain.Post;
 import com.blog.exception.PostNotFound;
+import com.blog.repository.MemberRepository;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
 import com.blog.response.PostResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +32,33 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @BeforeEach
+    void clean() {
+        postRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("글 작성")
     void test1() {
         // given
+        var member = Member.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        memberRepository.save(member);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
         // when
-        postService.write(postCreate);
+        postService.write(member.getId(), postCreate);
 
         // then
         assertEquals(1L, postRepository.count());

@@ -3,6 +3,7 @@ package com.blog.controller;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Signup;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ class AuthControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @BeforeEach
+    void clean() {
+        memberRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("회원가입")

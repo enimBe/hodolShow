@@ -1,9 +1,13 @@
 package com.blog.controller;
 
+import com.blog.config.BlogMockUser;
 import com.blog.domain.Post;
+import com.blog.repository.MemberRepository;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +46,15 @@ public class PostControllerDocTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @AfterEach
+    void clean() {
+        postRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("글 단건 조회 테스트")
     void test1() throws Exception {
@@ -70,6 +83,7 @@ public class PostControllerDocTest {
     }
 
     @Test
+    @BlogMockUser
     @DisplayName("글 등록")
     void test2() throws Exception {
         // given
