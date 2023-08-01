@@ -20,7 +20,7 @@ public class UserPrincipal extends User {
     public UserPrincipal(Member member) {
         super(member.getEmail(), member.getPassword(),
                 List.of(
-                        new SimpleGrantedAuthority("ROLE_USER")
+                        new SimpleGrantedAuthority("ROLE_ADMIN")
                         ));
         this.userId = member.getId();
     }

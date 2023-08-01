@@ -1,5 +1,9 @@
-### 테스트 요청
+### 게시글 작성
 
-GET http://localhost:8080/foo
+POST http://localhost:8080/posts
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkwNjk4NjY0fQ.3AE-NRN98PC-wVxpYyzqmuqyihG7HiFsbh2sj_HKePY
+
+{
+  "title": "제목입니다.",
+  "content": "내용입니다."
+}

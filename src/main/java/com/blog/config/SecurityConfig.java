@@ -4,6 +4,7 @@ import com.blog.config.filter.EmailPasswordAuthFilter;
 import com.blog.config.handler.Http401Handler;
 import com.blog.config.handler.Http403Handler;
 import com.blog.config.handler.LoginFailHandler;
+import com.blog.config.handler.LoginSuccessHandler;
 import com.blog.domain.Member;
 import com.blog.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +29,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -54,9 +54,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/auth/signup").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(emailPasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
@@ -75,7 +73,7 @@ public class SecurityConfig {
     public EmailPasswordAuthFilter emailPasswordAuthFilter() {
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 
