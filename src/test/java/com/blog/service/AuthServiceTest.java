@@ -5,6 +5,7 @@ import com.blog.exception.AlreadyExistEmailException;
 import com.blog.repository.MemberRepository;
 import com.blog.request.Signup;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @SpringBootTest
 class AuthServiceTest {
 
@@ -23,7 +24,7 @@ class AuthServiceTest {
     @Autowired
     private AuthService authService;
 
-    @AfterEach
+    @BeforeEach
     void clean() {
         memberRepository.deleteAll();
     }

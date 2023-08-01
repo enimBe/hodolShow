@@ -24,7 +24,6 @@ public class PostController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts") // POST -> 200, 201
     public void post(@RequestBody @Valid PostCreate request) {
-        request.validate();
         postService.write(request);
     }
 
