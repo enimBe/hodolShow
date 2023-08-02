@@ -2,8 +2,10 @@ package com.blog.controller;
 
 import com.blog.config.BlogMockUser;
 import com.blog.domain.Comment;
+import com.blog.domain.CommentDelete;
 import com.blog.domain.Member;
 import com.blog.domain.Post;
+import com.blog.exception.InvalidPassword;
 import com.blog.repository.MemberRepository;
 import com.blog.repository.comment.CommentRepository;
 import com.blog.repository.post.PostRepository;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -109,4 +112,41 @@ class CommentControllerTest {
         assertEquals("to my diamonds and pearls", savedComment.getContent());
     }
 
+    @Test
+    @DisplayName("댓글 삭제")
+    void test2() throws Exception {
+        // given
+        Member member = Member.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        memberRepository.save(member);
+
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("bar")
+                .member(member)
+                .build();
+        postRepository.save(post);
+
+        String encryptedPassword = passwordEncoder.encode("123456");
+        Comment comment = Comment.builder()
+                .author("호돌순")
+                .password(encryptedPassword)
+                .content("to my diamonds and pearls")
+                .build();
+        comment.setPost(post);
+        commentRepository.save(comment);
+
+        CommentDelete request = new CommentDelete("123456");
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/comments/{commentId}/delete", comment.getId())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
