@@ -1,7 +1,10 @@
 package com.blog.service;
 
 import com.blog.domain.Comment;
+import com.blog.domain.CommentDelete;
 import com.blog.domain.Post;
+import com.blog.exception.CommentNotFound;
+import com.blog.exception.InvalidPassword;
 import com.blog.exception.PostNotFound;
 import com.blog.repository.comment.CommentRepository;
 import com.blog.repository.post.PostRepository;
@@ -33,5 +36,17 @@ public class CommentService {
                 .build();
 
         post.addComment(comment);
+    }
+
+    public void delete(Long commentId, CommentDelete request) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFound::new);
+
+        String encryptedPassword = comment.getPassword();
+        if (!passwordEncoder.matches(request.getPassword(), encryptedPassword)) {
+            throw new InvalidPassword();
+        }
+
+        commentRepository.delete(comment);
     }
 }
