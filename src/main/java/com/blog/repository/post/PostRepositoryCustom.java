@@ -1,7 +1,7 @@
-package com.blog.repository;
+package com.blog.repository.post;
 
 import com.blog.domain.Post;
-import com.blog.request.PostSearch;
+import com.blog.request.post.PostSearch;
 
 import java.util.List;
 

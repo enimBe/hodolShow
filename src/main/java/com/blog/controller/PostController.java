@@ -1,9 +1,9 @@
 package com.blog.controller;
 
 import com.blog.config.UserPrincipal;
-import com.blog.request.PostCreate;
-import com.blog.request.PostEdit;
-import com.blog.request.PostSearch;
+import com.blog.request.post.PostCreate;
+import com.blog.request.post.PostEdit;
+import com.blog.request.post.PostSearch;
 import com.blog.response.PostResponse;
 import com.blog.service.PostService;
 import lombok.RequiredArgsConstructor;

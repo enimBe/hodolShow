@@ -4,6 +4,8 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -22,6 +24,9 @@ public class Post {
     @JoinColumn
     private Member member;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<Comment> comments;
+
     @Builder
     public Post(String title, String content, Member member) {
         this.title = title;
@@ -36,5 +41,10 @@ public class Post {
 
     public Long getMemberId() {
         return this.member.getId();
+    }
+
+    public void addComment(Comment comment) {
+        comment.setPost(this);
+        this.comments.add(comment);
     }
 }
