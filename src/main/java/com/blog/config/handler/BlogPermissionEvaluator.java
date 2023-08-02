@@ -2,7 +2,7 @@ package com.blog.config.handler;
 
 import com.blog.config.UserPrincipal;
 import com.blog.exception.PostNotFound;
-import com.blog.repository.PostRepository;
+import com.blog.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.PermissionEvaluator;
